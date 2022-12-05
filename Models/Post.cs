@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace BlogApi.Models;
 
 public class Post
@@ -8,5 +10,7 @@ public class Post
     public DateTime CreatedDate { get; set; }
 
     public int BlogId { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Blog Blog { get; set; }
 }
