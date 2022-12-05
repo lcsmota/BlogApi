@@ -118,4 +118,54 @@ public class PostsController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
+
+    [HttpGet("withblog")]
+    public async Task<ActionResult> GetPostsWithBlogAsync()
+    {
+        try
+        {
+            var posts = await _unitOfWork.PostsRepository.GetPostsWithBlogAsync();
+
+            return Ok(posts);
+        }
+        catch (System.Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpGet("{id:int}/withblog")]
+    public async Task<ActionResult> GetPostByIdWithBlogAsync(int id)
+    {
+        try
+        {
+            var post = await _unitOfWork.PostsRepository.GetPostByIdWithBlogAsync(id);
+
+            if (post is null) return NotFound("Post not found.");
+
+            return Ok(post);
+        }
+        catch (System.Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpGet("blog/{id:int}")]
+    public async Task<ActionResult> GetPostsByBlogAsync(int id)
+    {
+        try
+        {
+            var posts = await _unitOfWork.PostsRepository.GetPostsByBlogIdAsync(id);
+
+            if (!posts.Any()) return NotFound("Posts not found.");
+
+            return Ok(posts);
+        }
+        catch (System.Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
 }
