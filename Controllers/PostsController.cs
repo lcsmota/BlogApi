@@ -1,3 +1,4 @@
+using BlogApi.DTOs;
 using BlogApi.Interfaces;
 using BlogApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -50,17 +51,25 @@ public class PostsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> InsertPostAsync(Post post)
+    public async Task<ActionResult> InsertPostAsync(PostForCreationDTO post)
     {
         try
         {
             if (post is null) return BadRequest("Check the field(s) and try again.");
 
-            await _unitOfWork.PostsRepository.InsertAsync(post);
+            var createdPost = new Post
+            {
+                Title = post.Title,
+                Content = post.Content,
+                CreatedDate = post.CreatedDate,
+                BlogId = post.BlogId
+            };
+
+            await _unitOfWork.PostsRepository.InsertAsync(createdPost);
 
             await _unitOfWork.CommitAsync();
 
-            return CreatedAtRoute("GetPostById", new { id = post.PostId }, post);
+            return CreatedAtRoute("GetPostById", new { id = createdPost.PostId }, createdPost);
         }
         catch (System.Exception ex)
         {
