@@ -6,6 +6,7 @@
 - [x] SQL SERVER
 - [x] Entity Framework 7
 - [x] Code First
+- [x] Fluent API
 - [x] Swagger
 - [x] DTOs
 - [x] Repository Pattern
